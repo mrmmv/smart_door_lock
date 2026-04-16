@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Door Lock System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <!-- Auth Check Loader -->
+    <div id="auth-loader" class="auth-loader">
+        <ion-icon name="finger-print-outline" class="pulse-icon"></ion-icon>
+        <p>Authenticating Admin...</p>
+    </div>
+
+    <div class="app-container" id="main-app" style="display:none;">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                <h2>SmartLock</h2>
+                <button class="mobile-toggle" id="close-sidebar"><ion-icon name="close-outline"></ion-icon></button>
+            </div>
+            <nav class="menu" style="flex: 1;">
+                <a href="#" class="menu-item active" data-target="dashboard">
+                    <ion-icon name="grid-outline"></ion-icon> Dashboard
+                </a>
+                <a href="#" class="menu-item" data-target="users">
+                    <ion-icon name="people-outline"></ion-icon> Profiles
+                </a>
+                <a href="#" class="menu-item" data-target="logs">
+                    <ion-icon name="list-outline"></ion-icon> Access Logs
+                </a>
+            </nav>
+            <div class="menu-bottom" style="padding: 0 16px;">
+                <a href="#" class="menu-item" id="btn-logout" style="color: var(--danger); justify-content: start;">
+                    <ion-icon name="log-out-outline"></ion-icon> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Sidebar overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="mobile-toggle" id="open-sidebar"><ion-icon name="menu-outline"></ion-icon></button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar"><ion-icon name="shield-checkmark-outline" style="color: var(--primary)"></ion-icon></div>
+                    <span id="admin-user-name">Administrator</span>
+                </div>
+            </header>
+
+            <div class="view-content">
+                <!-- Dashboard View -->
+                <section id="dashboard" class="view-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><ion-icon name="people"></ion-icon></div>
+                            <div class="stat-info">
+                                <h3>Total Users / Keys</h3>
+                                <p id="stat-total-users">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success"><ion-icon name="checkmark-circle"></ion-icon></div>
+                            <div class="stat-info">
+                                <h3>Allowed Access</h3>
+                                <p id="stat-allowed">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger"><ion-icon name="close-circle"></ion-icon></div>
+                            <div class="stat-info">
+                                <h3>Denied Access</h3>
+                                <p id="stat-denied">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Users View -->
+                <section id="users" class="view-section">
+                    <div class="section-header">
+                        <h2>Manage Physical Users Configuration</h2>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <button class="btn btn-warning" id="btn-remote-enroll" style="background-color: var(--warning); color: #000;">
+                                <ion-icon name="wifi-outline"></ion-icon> Remote OTA Enroll
+                            </button>
+                            <button class="btn btn-primary" id="btn-add-user">
+                                <ion-icon name="add-outline"></ion-icon> Add Final User
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>UID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Type</th>
+                                    <th>Allowed Status</th>
+                                    <th>Schedule</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Logs View -->
+                <section id="logs" class="view-section">
+                    <div class="section-header">
+                        <h2>Access Tracker Logs</h2>
+                        <button class="btn btn-secondary" id="btn-refresh-logs">
+                            <ion-icon name="refresh-outline"></ion-icon> Refresh
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date/Time</th>
+                                    <th>UID</th>
+                                    <th>Name</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logs-table-body">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- User Modal Overlay -->
+    <div class="modal-overlay" id="user-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Register Identity</h3>
+                <button class="close-modal"><ion-icon name="close-outline"></ion-icon></button>
+            </div>
+            <div class="modal-body">
+                <form id="user-form">
+                    <div class="form-group">
+                        <label>Target UID (RFID Hex / Fingerprint ID)</label>
+                        <div class="input-with-icon">
+                            <ion-icon name="keypad-outline"></ion-icon>
+                            <input type="text" id="inp-uid" required placeholder="e.g. 1A2B3C4D or 2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Associate Name</label>
+                        <div class="input-with-icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                            <input type="text" id="inp-name" required placeholder="e.g. John Doe">
+                        </div>
+                    </div>
+                    <div class="form-row mobile-col">
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select id="inp-role">
+                                <option value="visitor">Visitor</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Auth Credential Type</label>
+                            <select id="inp-type">
+                                <option value="rfid">RFID Tag</option>
+                                <option value="fingerprint">Fingerprint</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="toggle-group mt-10">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="inp-allowed" class="toggle-input" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Allow Global Access</span>
+                    </div>
+
+                    <div class="advanced-section" id="visitor-settings">
+                        <h4><ion-icon name="time-outline"></ion-icon> Visitor Time Restrictions</h4>
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="inp-schedule" class="toggle-input">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span>Enable Active Working Hours Only</span>
+                        </div>
+                        
+                        <div class="form-row" id="time-inputs" style="display: none; margin-top: 15px;">
+                            <div class="form-group">
+                                <label>Start Check-in</label>
+                                <input type="time" id="inp-start">
+                            </div>
+                            <div class="form-group">
+                                <label>End Window</label>
+                                <input type="time" id="inp-end">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary"><ion-icon name="save-outline"></ion-icon> Save Entity</button>
+                        <button type="button" class="btn btn-secondary close-modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remote OTA Enroll Modal Override -->
+    <div class="modal-overlay" id="enroll-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Force Hardware Fingerprint Enrollment</h3>
+                <button class="close-modal" id="close-enroll" style="background:none; border:none; cursor:pointer;"><ion-icon name="close-outline" style="font-size:24px; color:var(--text-muted);"></ion-icon></button>
+            </div>
+            <div class="modal-body" id="enroll-body">
+                <p style="margin-bottom: 20px; font-size: 14px; color: var(--text-muted);">
+                   Select an ID configuration (1-127) for the new fingerprint. The door scanner will immediately intercept this payload and guide the visitor to place their finger explicitly over its OLED Screen natively over the air!
+                </p>
+                <form id="enroll-form">
+                    <div class="form-group">
+                        <label>Target Remote Fingerprint ID Slot</label>
+                        <input type="number" id="inp-enroll-id" min="1" max="127" required placeholder="E.g. 10">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" style="background:var(--warning); color:#000;">
+                            <ion-icon name="radio-outline"></ion-icon> Broadcast OTA Pulse
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/script.js"></script>
+</body>
+</html>
+</html>
