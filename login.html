@@ -205,7 +205,7 @@
                         <ion-icon name="lock-closed-outline"></ion-icon>
                         <input type="password" id="auth-password" required placeholder="••••••••" minlength="6">
                         <button type="button" class="toggle-password-btn" id="btn-toggle-pwd">
-                            <ion-icon name="eye-outline" id="pwd-icon"></ion-icon>
+                            <ion-icon name="eye-off-outline" id="pwd-icon"></ion-icon>
                         </button>
                     </div>
                 </div>
@@ -233,10 +233,10 @@
             const pwdIcon = document.getElementById('pwd-icon');
             if (pwdInput.type === 'password') {
                 pwdInput.type = 'text';
-                pwdIcon.name = 'eye-off-outline';
+                pwdIcon.name = 'eye-outline';
             } else {
                 pwdInput.type = 'password';
-                pwdIcon.name = 'eye-outline';
+                pwdIcon.name = 'eye-off-outline';
             }
         });
     </script>

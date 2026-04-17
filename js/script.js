@@ -168,6 +168,49 @@ document.addEventListener("DOMContentLoaded", () => {
     initEnrollModal();
     // === END OTA ENROLL ===
     
+    // === REMOTE RFID ENROLL LOGIC ===
+    const btnRemoteRfid = document.getElementById('btn-remote-rfid');
+    if(btnRemoteRfid) {
+        btnRemoteRfid.addEventListener('click', async () => {
+            try {
+                await set(ref(db, 'system_state/enroll_rfid_target'), "true");
+                await set(ref(db, 'system_state/last_scanned_rfid'), "");
+                
+                let attempts = 0;
+                btnRemoteRfid.innerHTML = '<ion-icon name="sync-outline" class="pulse-icon"></ion-icon> Scanning...';
+                btnRemoteRfid.disabled = true;
+                
+                const pollTimer = setInterval(async () => {
+                    attempts++;
+                    const snapshot = await get(ref(db, 'system_state/last_scanned_rfid'));
+                    const scannedUid = snapshot.val();
+                    if (scannedUid && scannedUid.length > 0) {
+                        clearInterval(pollTimer);
+                        await set(ref(db, 'system_state/last_scanned_rfid'), ""); // flush
+                        
+                        btnRemoteRfid.innerHTML = '<ion-icon name="card-outline"></ion-icon> Scan RFID on Door';
+                        btnRemoteRfid.disabled = false;
+                        
+                        document.getElementById('btn-add-user').click();
+                        document.getElementById('inp-uid').value = scannedUid;
+                        document.getElementById('inp-type').value = 'rfid';
+                        alert('Success! RFID Card ' + scannedUid + ' was captured by the door securely and autofilled for you.');
+                    } else if (attempts > 20) { // 20 secs
+                        clearInterval(pollTimer);
+                        await set(ref(db, 'system_state/enroll_rfid_target'), "false");
+                        btnRemoteRfid.innerHTML = '<ion-icon name="card-outline"></ion-icon> Scan RFID on Door';
+                        btnRemoteRfid.disabled = false;
+                        alert('Scanner timed out. No card was presented at the door.');
+                    }
+                }, 1000);
+            } catch(e) {
+                alert("Error triggering remote scanner: " + e.message);
+                btnRemoteRfid.innerHTML = '<ion-icon name="card-outline"></ion-icon> Scan RFID on Door';
+                btnRemoteRfid.disabled = false;
+            }
+        });
+    }
+
     // Initial fetch / Subscribe to Realtime Updates
     window.fetchUsers();
     window.listenToLogs();
