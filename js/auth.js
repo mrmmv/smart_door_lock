@@ -146,7 +146,20 @@ else {
                 window.location.replace('index.html');
             }
         } catch (error) {
-            const rawMessage = error.message.replace("Firebase:", "").trim();
+            let rawMessage = error.message.replace("Firebase:", "").trim();
+            
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                rawMessage = "Wrong email or password. Please try again.";
+            } else if (error.code === 'auth/email-already-in-use') {
+                rawMessage = "This email is already registered.";
+            } else if (error.code === 'auth/weak-password') {
+                rawMessage = "Password is too weak. Please use at least 6 characters.";
+            } else if (error.code === 'auth/invalid-email') {
+                rawMessage = "Please enter a valid email address.";
+            } else if (error.code === 'auth/too-many-requests') {
+                rawMessage = "Too many failed attempts. Please try again later.";
+            }
+
             authError.innerText = rawMessage;
             authSubmitBtn.innerHTML = initialBtnText;
             
