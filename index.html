@@ -161,11 +161,20 @@
             </div>
             <div class="modal-body">
                 <form id="user-form">
-                    <div class="form-group">
-                        <label>Target UID (RFID Hex / Fingerprint ID)</label>
-                        <div class="input-with-icon">
-                            <ion-icon name="keypad-outline"></ion-icon>
-                            <input type="text" id="inp-uid" required placeholder="e.g. 1A2B3C4D or 2">
+                    <div class="form-row mobile-col">
+                        <div class="form-group">
+                            <label>Primary UID (RFID Hex / Fingerprint ID)</label>
+                            <div class="input-with-icon">
+                                <ion-icon name="keypad-outline"></ion-icon>
+                                <input type="text" id="inp-uid" required placeholder="e.g. 1A2B3C4D or 2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Secondary UID (Optional - Enroll Both)</label>
+                            <div class="input-with-icon">
+                                <ion-icon name="add-circle-outline"></ion-icon>
+                                <input type="text" id="inp-uid2" placeholder="e.g. 10">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -188,6 +197,7 @@
                             <select id="inp-type">
                                 <option value="rfid">RFID Tag</option>
                                 <option value="fingerprint">Fingerprint</option>
+                                <option value="hybrid">Hybrid (Both Enrolled)</option>
                             </select>
                         </div>
                     </div>

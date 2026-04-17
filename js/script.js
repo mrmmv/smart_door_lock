@@ -55,6 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.classList.remove('active');
             form.reset();
             document.getElementById('inp-uid').readOnly = false;
+            const uid2Field = document.getElementById('inp-uid2');
+            if(uid2Field) {
+                uid2Field.readOnly = false;
+                uid2Field.placeholder = "e.g. 10";
+            }
             roleSelect.dispatchEvent(new Event('change'));
             scheduleToggle.dispatchEvent(new Event('change'));
         };
@@ -78,6 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const uid = document.getElementById('inp-uid').value;
+            const uid2Element = document.getElementById('inp-uid2');
+            const uid2 = uid2Element ? uid2Element.value : "";
             const data = {
                 name: document.getElementById('inp-name').value,
                 role: roleSelect.value,
@@ -89,8 +96,14 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                // Save directly to Firebase Database
+                // Save directly to Firebase Database for primary UID
                 await set(ref(db, 'users/' + uid), data);
+                
+                // Save identical configuration for the secondary UID parallelly if provided!
+                if (uid2 && uid2.trim() !== '') {
+                    await set(ref(db, 'users/' + uid2.trim()), data);
+                }
+                
                 closeModal();
                 window.fetchUsers();
             } catch(e) {
@@ -291,6 +304,14 @@ window.editUser = async function(uid) {
     if(user) {
         document.getElementById('inp-uid').value = uid;
         document.getElementById('inp-uid').readOnly = true;
+        
+        const uid2Element = document.getElementById('inp-uid2');
+        if (uid2Element) {
+            uid2Element.value = "";
+            uid2Element.readOnly = true; 
+            uid2Element.placeholder = "Disabled in Edit Mode";
+        }
+        
         document.getElementById('inp-name').value = user.name;
         document.getElementById('inp-role').value = user.role || 'visitor';
         document.getElementById('inp-type').value = user.type || 'rfid';

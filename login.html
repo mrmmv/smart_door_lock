@@ -10,6 +10,145 @@
     <!-- Ionicons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Force Stunning Styles to bypass Cache -->
+    <style>
+        .auth-body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .auth-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3) !important;
+            width: 100%;
+            max-width: 450px;
+            margin: auto;
+        }
+        .auth-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+        .auth-header p {
+            font-size: 15px;
+            color: #64748b;
+        }
+        .input-with-icon {
+            position: relative;
+            width: 100%;
+        }
+        .input-with-icon input {
+            height: 60px !important;
+            padding: 10px 15px 10px 55px !important;
+            font-size: 16px !important;
+            border-radius: 12px !important;
+            border: 1px solid #cbd5e1 !important;
+            background: #f8fafc !important;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .input-with-icon input:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2) !important;
+        }
+        .input-with-password input {
+            padding-right: 55px !important;
+        }
+        .input-with-icon > ion-icon {
+            position: absolute;
+            left: 18px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            font-size: 24px !important;
+            color: #94a3b8 !important;
+            z-index: 10;
+        }
+        .toggle-password-btn {
+            position: absolute !important;
+            right: 0 !important;
+            top: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            height: 100% !important;
+            width: 50px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            z-index: 15 !important;
+        }
+        .toggle-password-btn ion-icon {
+            font-size: 24px !important;
+            color: #94a3b8 !important;
+        }
+        .toggle-password-btn:hover ion-icon {
+            color: #3b82f6 !important;
+        }
+        .auth-btn {
+            height: 60px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            background: #3b82f6 !important;
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.2) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .auth-btn:hover {
+            background: #2563eb !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59,130,246,0.4) !important;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .auth-toggle {
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 8px;
+            display: flex;
+            margin-bottom: 30px;
+        }
+        .auth-toggle button {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+        .auth-toggle button.active {
+            background: #ffffff;
+            color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body class="auth-body">
     <div class="auth-container">
