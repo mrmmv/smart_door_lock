@@ -311,6 +311,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 20px;
 }
 
 .modal-overlay.active {
@@ -321,6 +322,9 @@ body {
     background-color: var(--bg-card);
     width: 100%;
     max-width: 500px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
     border-radius: var(--radius);
     border: 1px solid var(--border);
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
@@ -347,7 +351,8 @@ body {
 .close-modal:hover { color: var(--text-main); }
 
 .modal-body {
-    padding: 24px;
+    padding: 20px 24px;
+    overflow-y: auto;
 }
 
 .form-group {
