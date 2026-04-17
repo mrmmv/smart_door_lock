@@ -36,6 +36,9 @@
                 <a href="#" class="menu-item" data-target="logs">
                     <ion-icon name="list-outline"></ion-icon> Access Logs
                 </a>
+                <a href="#" class="menu-item" data-target="guide">
+                    <ion-icon name="book-outline"></ion-icon> System Guide
+                </a>
             </nav>
             <div class="menu-bottom" style="padding: 0 16px;">
                 <a href="#" class="menu-item" id="btn-logout" style="color: var(--danger); justify-content: start;">
@@ -146,6 +149,33 @@
                                 <!-- Populated via JS -->
                             </tbody>
                         </table>
+                    </div>
+                </section>
+
+                <!-- Guide View -->
+                <section id="guide" class="view-section">
+                    <div class="section-header">
+                        <h2>System Setup & Technical Overview</h2>
+                    </div>
+                    <div class="stats-grid" style="grid-template-columns: 1fr; gap: 20px;">
+                        <div class="stat-card" style="flex-direction: column; align-items: flex-start; padding: 30px;">
+                            <h3 style="font-size: 18px; color: var(--primary); margin-bottom: 12px; display:flex; align-items:center; gap:8px;"><ion-icon name="hardware-chip-outline" style="font-size:24px;"></ion-icon> 1. Hardware Integration</h3>
+                            <p style="color: var(--text-main); font-size: 15px; line-height: 1.6;">
+                            The Smart Door Lock utilizes an ESP8266 microcontroller connected to an RFID scanner (MFRC522), a Fingerprint Sensor, an IR Sensor for physical intrusion detection, and a 5V Relay module for locking/unlocking the magnetic door frame. The <code style="background:var(--bg-hover); padding:2px 6px; border-radius:4px; font-weight:bold;">RELAY_PIN (D8)</code> dictates the lock mechanism state mechanically, while the <code style="background:var(--bg-hover); padding:2px 6px; border-radius:4px; font-weight:bold;">DOOR_SENSOR_PIN (A0)</code> tracks whether the physical door holds completely shut securely.
+                            </p>
+                        </div>
+                        <div class="stat-card" style="flex-direction: column; align-items: flex-start; padding: 30px;">
+                            <h3 style="font-size: 18px; color: var(--primary); margin-bottom: 12px; display:flex; align-items:center; gap:8px;"><ion-icon name="wifi-outline" style="font-size:24px;"></ion-icon> 2. Initial Wi-Fi Calibration</h3>
+                            <p style="color: var(--text-main); font-size: 15px; line-height: 1.6;">
+                            Upon power failure or first installation boot, the ESP8266 securely generates an Access Point dynamically. Simply connect your mobile phone to the <strong>"SmartDoor_001"</strong> Wi-Fi network and a setup captive portal page will immediately load enabling you to attach it to your local house WiFi network smoothly natively! No hardcoding changes are necessary.
+                            </p>
+                        </div>
+                        <div class="stat-card" style="flex-direction: column; align-items: flex-start; padding: 30px;">
+                            <h3 style="font-size: 18px; color: var(--primary); margin-bottom: 12px; display:flex; align-items:center; gap:8px;"><ion-icon name="finger-print-outline" style="font-size:24px;"></ion-icon> 3. Enrolling Hybrid Profiles</h3>
+                            <p style="color: var(--text-main); font-size: 15px; line-height: 1.6;">
+                            To enroll a completely new physical identity, use <strong>"Remote OTA Enroll"</strong> to forcefully interact with the door locking mechanism hardware to capture a pristine fingerprint pattern assigned to an ID Slot (e.g. 10). Then navigate to <strong>"Add Final User"</strong> within your web dashboard to formally link that exact ID slot and optionally the person's physical RFID Hex card into a universally synchronized <em>Hybrid</em> web profile account instantly!
+                            </p>
+                        </div>
                     </div>
                 </section>
             </div>
