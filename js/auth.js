@@ -74,6 +74,7 @@ else {
         btnShowLogin.classList.remove('active');
         nameGroup.style.display = 'block';
         if(deviceGroup) deviceGroup.style.display = 'block';
+        if(btnForgot) btnForgot.parentElement.style.display = 'none';
         authSubmitBtn.innerHTML = '<ion-icon name="person-add-outline"></ion-icon> Register Admin';
         authError.style.color = "var(--danger)";
         authError.innerText = '';
@@ -85,6 +86,7 @@ else {
         btnShowSignup.classList.remove('active');
         nameGroup.style.display = 'none';
         if(deviceGroup) deviceGroup.style.display = 'none';
+        if(btnForgot) btnForgot.parentElement.style.display = 'block';
         authSubmitBtn.innerHTML = '<ion-icon name="log-in-outline"></ion-icon> Login Securely';
         authError.style.color = "var(--danger)";
         authError.innerText = '';
